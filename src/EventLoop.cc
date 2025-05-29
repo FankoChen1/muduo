@@ -67,6 +67,7 @@ void EventLoop::loop()
     while(!quit_)
     {
         activeChannels_.clear();
+        // 调用完poll()后activeChannels_会包含活动的文件描述符
         pollReturnTime_ = poller_->poll(kPollTimeMs, &activeChannels_);
         for(Channel *channel : activeChannels_)
         {
@@ -116,7 +117,7 @@ void EventLoop::queueInLoop(Functor cb)
 void EventLoop::handleRead()
 {
     uint64_t one = 1;
-    ssize_t n = read(wakeupFd_, &one, sizeof(one));
+    ssize_t n = ::read(wakeupFd_, &one, sizeof(one));
     if(n != sizeof(one))
     {
         LOG_ERROR("EventLoop::handleRead() reads %lu bytes instead of 8\n", n);

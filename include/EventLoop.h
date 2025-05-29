@@ -31,10 +31,13 @@ public:
 
     void queueInLoop(Functor cb);
 
+    // 在某个时刻执行回调
     TimerId runAt(const Timestamp& time, const Timer::TimerCallback& cb);
 
+    // 在某段时间后执行回调
     TimerId runAfter(double delay, const Timer::TimerCallback& cb);
 
+    // 每隔一段时间执行一次回调
     TimerId runEvery(double interval, const Timer::TimerCallback& cb);
 
     void cancel(TimerId timerId);
@@ -60,7 +63,7 @@ private:
 
     Timestamp pollReturnTime_;
     std::unique_ptr<Poller> poller_;
-    std::unique_ptr<TimerQueue> timerQueue_;
+    std::unique_ptr<TimerQueue> timerQueue_;    // 定时器队列
 
     int wakeupFd_;
     std::unique_ptr<Channel> wakeupChannel_;

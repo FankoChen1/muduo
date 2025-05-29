@@ -24,8 +24,11 @@ public:
         callback_();
     }
 
+    // 返回定时器的到期时间
     Timestamp expiration() const  { return expiration_; }
+    // 返回是否周期性
     bool repeat() const { return repeat_; }
+    // 返回定时器的标识
     int64_t sequence() const { return sequence_; }
 
     void restart(Timestamp now);

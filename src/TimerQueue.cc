@@ -18,10 +18,12 @@ int createTimerfd()
     return timerfd;
 }
 
+// 传入的时间戳距离现在有多久
 struct timespec howMuchTimeFromNow(Timestamp when)
 {
     int64_t microseconds = when.microSecondsSinceEpoch()
                             - Timestamp::now().microSecondsSinceEpoch();
+    // 如果小于100微秒或已经超时，则100微秒后执行
     if (microseconds < 100)
     {
         microseconds = 100;
@@ -36,24 +38,25 @@ void readTimerfd(int timerfd, Timestamp now)
 {
     uint64_t howmany;
     ssize_t n = ::read(timerfd, &howmany, sizeof(howmany));
-    LOG_INFO("TimerQueue::handleRead() %lu at %s", howmany, now.toString().c_str());
+    LOG_INFO("readTimerfd() %lu at %s", howmany, now.toString().c_str());
     if(n != sizeof(howmany))
     {
-        LOG_ERROR("TimerQueue::handleRead() reads %ld bytes instead of 8", n);
+        LOG_ERROR("readTimerfd() reads %ld bytes instead of 8", n);
     }
 }
-
+// 重置到期或过期定时器100微秒后执行
 void resetTimerfd(int timerfd, Timestamp expiration)
 {
     struct itimerspec newValue;
     struct itimerspec oldValue;
     ::memset(&newValue, 0, sizeof newValue);
     ::memset(&newValue, 0, sizeof oldValue);
+    // 设置首次到期时间为多久后
     newValue.it_value = howMuchTimeFromNow(expiration);
     int ret = ::timerfd_settime(timerfd, 0, &newValue, &oldValue);
     if (ret)
     {
-        LOG_ERROR("%s : timerfd_settime()", __FUNCTION__);
+        LOG_ERROR("%s : timerfd_settime():%d", __FUNCTION__, errno);
     }
 }
 
@@ -63,6 +66,7 @@ TimerQueue::TimerQueue(EventLoop* loop)
     , timerfdChannel_(loop, timerfd_)
     , timers_()
 {
+    // 给channel添加读事件监听
     timerfdChannel_.setReadCallback(std::bind(&TimerQueue::handleRead, this));
     timerfdChannel_.enableReading();
 }
@@ -78,7 +82,7 @@ TimerId TimerQueue::addTimer(const Timer::TimerCallback& cb, Timestamp when, dou
 {
     std::unique_ptr<Timer> timer(new Timer(cb, when, interval));
     TimerId id(timer.get(), timer->sequence());
-    // C++11 lambda捕获外部变量
+    // C++11 lambda捕获裸指针，timer有短暂空窗期，但runInLoop保证了线程安全
     Timer* timerPtr = timer.release();
     loop_->runInLoop(
         [this, timerPtr]() {
@@ -98,6 +102,7 @@ void TimerQueue::addTimerInLoop(std::unique_ptr<Timer> timer)
 {
     if(!loop_->isInLoopThread()) LOG_FATAL("TimerQueue::addTimerInLoop() : the thread is not in loop");
     bool earliestChanged = insert(std::move(timer));
+    // 如果该定时器是最近要触发的，重置定时器100微秒后执行
     if(earliestChanged)
     {
         resetTimerfd(timerfd_, timers_.begin()->second->expiration());
@@ -223,18 +228,21 @@ bool TimerQueue::insert(std::unique_ptr<Timer> timer)
     {
         LOG_FATAL("TimerQueue::insert() before insert : timers_ and activeTimers_'s numbers are different\n");
     }
+    // 标志该定时器是否最近要触发
     bool earliestChanged = false;
     Timestamp when = timer->expiration();
     TimerList::iterator it = timers_.begin();
+    // 如果队列中只有这一个定时器，或者已经超时，则...
     if (it == timers_.end() || when < it->first)
     {
         earliestChanged = true;
     }
 
     Timer* timerPtr = timer.get();
+    // 将定时器插入全部定时器队列
     auto result = timers_.insert(Entry(when, std::move(timer)));
     if(!result.second) { LOG_FATAL("TimerQueue::insert() : Failed in timers_.insert()\n"); }
-
+    // 将定时器插入活动定时器队列
     auto result2 = activeTimers_.insert(ActiveTimer(timerPtr, timerPtr->sequence()));
     if(!result2.second) { LOG_FATAL("TimerQueue::insert() : Failed in activeTimers_.insert()\n"); }
 

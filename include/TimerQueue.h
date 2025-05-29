@@ -16,6 +16,7 @@ public:
     TimerQueue(EventLoop* loop);
     ~TimerQueue();
 
+    // 创建Timer并投递到事件循环线程
     TimerId addTimer(const Timer::TimerCallback& cb, Timestamp when, double interval);
 
     void cancel(TimerId timerId);
@@ -40,7 +41,7 @@ private:
     void handleRead();
     std::vector<Entry> getExpired(Timestamp now);
     void reset(std::vector<Entry>& expired, Timestamp now);
-
+    // 将定时器插入timers_和activeTimers_队列
     bool insert(std::unique_ptr<Timer> timer);
     
     EventLoop* loop_;
