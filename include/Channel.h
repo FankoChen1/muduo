@@ -17,6 +17,7 @@ public:
     Channel(EventLoop *loop, int fd);
     ~Channel();
 
+    // handleEvent 处理的是IO事件（如网络、定时器、wakeup等）
     void handleEvent(Timestamp receiveTime);
     void setReadCallback(const ReadEventCallback &cb)
     { readCallback_ = std::move(cb); }

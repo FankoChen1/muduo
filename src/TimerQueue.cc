@@ -1,12 +1,12 @@
-#include "TimerQueue.h"
-#include "EventLoop.h"
-#include "Timer.h"
-#include "TimerId.h"
-#include "Logger.h"
-
 #include <sys/timerfd.h>
 #include <unistd.h>
 #include <string.h>
+
+#include "TimerQueue.h"
+#include "Timer.h"
+#include "TimerId.h"
+#include "EventLoop.h"
+#include "Logger.h"
 
 int createTimerfd()
 {
@@ -78,7 +78,7 @@ TimerQueue::~TimerQueue()
     ::close(timerfd_);
 }
 
-TimerId TimerQueue::addTimer(const Timer::TimerCallback& cb, Timestamp when, double interval)
+TimerId TimerQueue::addTimer(const TimerCallback& cb, Timestamp when, double interval)
 {
     std::unique_ptr<Timer> timer(new Timer(cb, when, interval));
     TimerId id(timer.get(), timer->sequence());

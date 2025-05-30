@@ -5,10 +5,11 @@
 
 #include "Channel.h"
 #include "Timestamp.h"
-#include "Timer.h"
-#include "TimerId.h"
+#include "Callbacks.h"
 
 class EventLoop;
+class Timer;
+class TimerId;
 
 class TimerQueue : noncopyable
 {
@@ -17,7 +18,7 @@ public:
     ~TimerQueue();
 
     // 创建Timer并投递到事件循环线程
-    TimerId addTimer(const Timer::TimerCallback& cb, Timestamp when, double interval);
+    TimerId addTimer(const TimerCallback& cb, Timestamp when, double interval);
 
     void cancel(TimerId timerId);
 

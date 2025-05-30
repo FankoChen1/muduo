@@ -10,6 +10,7 @@
 #include "Logger.h"
 #include "Channel.h"
 #include "Poller.h"
+#include "TimerQueue.h"
 
 __thread EventLoop* t_loopInThisThread = 0;
 
@@ -71,8 +72,10 @@ void EventLoop::loop()
         pollReturnTime_ = poller_->poll(kPollTimeMs, &activeChannels_);
         for(Channel *channel : activeChannels_)
         {
+            // handleEvent 处理的是IO事件（如网络、定时器、wakeup等）
             channel->handleEvent(pollReturnTime_);
         }
+        // 处理的是异步投递的回调任务，可能来自其它线程或本线程的异步操作
         doPendingFunctors();
     }
     LOG_INFO("EventLoop %p stop looping.\n", this);
@@ -124,18 +127,18 @@ void EventLoop::handleRead()
     }
 }
 
-TimerId EventLoop::runAt(const Timestamp& time, const Timer::TimerCallback& cb)
+TimerId EventLoop::runAt(const Timestamp& time, const TimerCallback& cb)
 {
   return timerQueue_->addTimer(cb, time, 0.0);
 }
 
-TimerId EventLoop::runAfter(double delay, const Timer::TimerCallback& cb)
+TimerId EventLoop::runAfter(double delay, const TimerCallback& cb)
 {
   Timestamp time(addTime(Timestamp::now(), delay));
   return runAt(time, std::move(cb));
 }
 
-TimerId EventLoop::runEvery(double interval, const Timer::TimerCallback& cb)
+TimerId EventLoop::runEvery(double interval, const TimerCallback& cb)
 {
   Timestamp time(addTime(Timestamp::now(), interval));
   return timerQueue_->addTimer(std::move(cb), time, interval);
@@ -146,10 +149,11 @@ void EventLoop::cancel(TimerId timerId)
     timerQueue_->cancel(timerId);
 }
 
+// 通过向wakeupFd_写一个8字节的数据来唤醒子线程
 void EventLoop::wakeup()
 {
     uint64_t one = 1;
-    ssize_t n = write(wakeupFd_, &one, sizeof(one));
+    ssize_t n = ::write(wakeupFd_, &one, sizeof(one));
     if(n != sizeof(one))
     {
         LOG_ERROR("EventLoop::wakeup() writes %lu bytes instead of 8\n", n);
@@ -177,8 +181,9 @@ void EventLoop::doPendingFunctors()
     callingPendingFunctors_ = true;
 
     {
+        // 该锁立即锁定，在结束上层作用域时自动析构解锁，此处建议使用lock_guard
         std::unique_lock<std::mutex> lock(mutex_);
-        functors.swap(pendingFunctors_);
+        functors.swap(pendingFunctors_); // 交换的方式减少了锁的临界区范围 提升效率 同时避免了死锁 如果执行functor()在临界区内 且functor()中调用queueInLoop()就会产生死锁
     }
 
     for(const Functor &functor : functors)

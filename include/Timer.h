@@ -5,11 +5,11 @@
 
 #include "noncopyable.h"
 #include "Timestamp.h"
+#include "Callbacks.h"
 
 class Timer : noncopyable
 {
 public:
-    using TimerCallback = std::function<void()>;
 
     Timer(TimerCallback cb, Timestamp when, double interval)
     : callback_(std::move(cb)),
