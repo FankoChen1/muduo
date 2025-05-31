@@ -13,7 +13,7 @@ int createTimerfd()
     int timerfd = ::timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
     if (timerfd < 0)
     {
-        LOG_FATAL("%s : Failed in timerfd_create", __FUNCTION__);
+        LOG_FATAL("%s:%s:%d : Failed in timerfd_create",  __FILE__, __FUNCTION__, __LINE__);
     }
     return timerfd;
 }
@@ -38,10 +38,10 @@ void readTimerfd(int timerfd, Timestamp now)
 {
     uint64_t howmany;
     ssize_t n = ::read(timerfd, &howmany, sizeof(howmany));
-    LOG_INFO("readTimerfd() %lu at %s", howmany, now.toString().c_str());
+    LOG_INFO("TimerQueue:%s : %lu at %s\n", __FUNCTION__, howmany, now.toString().c_str());
     if(n != sizeof(howmany))
     {
-        LOG_ERROR("readTimerfd() reads %ld bytes instead of 8", n);
+        LOG_ERROR("%s:%s reads %ld bytes instead of 8\n", __FILE__, __FUNCTION__, n);
     }
 }
 // 重置到期或过期定时器100微秒后执行
@@ -56,7 +56,7 @@ void resetTimerfd(int timerfd, Timestamp expiration)
     int ret = ::timerfd_settime(timerfd, 0, &newValue, &oldValue);
     if (ret)
     {
-        LOG_ERROR("%s : timerfd_settime():%d", __FUNCTION__, errno);
+        LOG_ERROR("%s:%s : timerfd_settime():%d\n", __FILE__, __FUNCTION__, errno);
     }
 }
 
@@ -100,7 +100,7 @@ void TimerQueue::cancel(TimerId timerId)
 
 void TimerQueue::addTimerInLoop(std::unique_ptr<Timer> timer)
 {
-    if(!loop_->isInLoopThread()) LOG_FATAL("TimerQueue::addTimerInLoop() : the thread is not in loop");
+    if(!loop_->isInLoopThread()) LOG_FATAL("%s:%s:%d : the thread is not in loop\n", __FILE__, __FUNCTION__, __LINE__);
     bool earliestChanged = insert(std::move(timer));
     // 如果该定时器是最近要触发的，重置定时器100微秒后执行
     if(earliestChanged)
@@ -111,7 +111,7 @@ void TimerQueue::addTimerInLoop(std::unique_ptr<Timer> timer)
 
 void TimerQueue::cancelInLoop(TimerId timerId)
 {
-    if(!loop_->isInLoopThread()) LOG_FATAL("TimerQueue::handleRead() : the thread is not in loop");
+    if(!loop_->isInLoopThread()) LOG_FATAL("%s:%s:%d : the thread is not in loop\n", __FILE__, __FUNCTION__, __LINE__);
     if (timers_.size() != activeTimers_.size())
     {
         LOG_FATAL("TimerQueue::cancelInLoop() before erase: timers_ and activeTimers_'s numbers are different\n");
@@ -241,10 +241,10 @@ bool TimerQueue::insert(std::unique_ptr<Timer> timer)
     Timer* timerPtr = timer.get();
     // 将定时器插入全部定时器队列
     auto result = timers_.insert(Entry(when, std::move(timer)));
-    if(!result.second) { LOG_FATAL("TimerQueue::insert() : Failed in timers_.insert()\n"); }
+    if(!result.second) { LOG_FATAL("%s:%s:%d : Failed in timers_.insert()\n", __FILE__, __FUNCTION__, __LINE__); }
     // 将定时器插入活动定时器队列
     auto result2 = activeTimers_.insert(ActiveTimer(timerPtr, timerPtr->sequence()));
-    if(!result2.second) { LOG_FATAL("TimerQueue::insert() : Failed in activeTimers_.insert()\n"); }
+    if(!result2.second) { LOG_FATAL("%s:%s:%d : Failed in activeTimers_.insert()\n", __FILE__, __FUNCTION__, __LINE__); }
 
     return earliestChanged;
 }

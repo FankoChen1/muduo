@@ -18,7 +18,7 @@ EPollPoller::EPollPoller(EventLoop *loop)
 {
     if(epollfd_ < 0)
     {
-        LOG_FATAL("epoll_create error:%d \n", errno);
+        LOG_FATAL("%s:%s:%d epoll_create error:%d \n", __FILE__, __FUNCTION__, __LINE__, errno);
     }
 }
 
@@ -46,14 +46,14 @@ Timestamp EPollPoller::poll(int timeoutMs, ChannelList *activeChannels)
     }
     else if (numEvents == 0)
     {
-        LOG_DEBUG("%s timeout!\n", __FUNCTION__);
+        LOG_DEBUG("%s:%s:%d timeout!\n",  __FILE__, __FUNCTION__, __LINE__);
     }
     else
     {
         if (saveErrno != EINTR)
         {
             errno = saveErrno;
-            LOG_ERROR("EPollPoller::poll() error: %d", errno);
+            LOG_ERROR("%s:%s:%d error: %d", __FILE__, __FUNCTION__, __LINE__, errno);
         }
     }
     return now;
@@ -134,11 +134,11 @@ void EPollPoller::update(int operation, Channel *channel)
     {
         if(operation == EPOLL_CTL_DEL)
         {
-            LOG_ERROR("epoll_ctl del error:%d\n", errno);
+            LOG_ERROR("%s:%s:%d epoll_ctl del error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
         }
         else
         {
-            LOG_FATAL("epoll_ctl add/mod error:%d\n", errno);
+            LOG_FATAL("%s:%s:%d epoll_ctl add/mod error:%d\n", __FILE__, __FUNCTION__, __LINE__, errno);
         }
     }
 }

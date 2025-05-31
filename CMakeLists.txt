@@ -18,7 +18,7 @@ message(STATUS "Found sources: ${SOURCES}")  # 调试用，可选
 add_library(muduo ${SOURCES})
 
 # 添加 test 可执行文件
-add_executable(test ${PROJECT_SOURCE_DIR}/test/EventLoopThreadPool_test.cc)
+add_executable(test ${PROJECT_SOURCE_DIR}/test/Acceptor_test.cc)
 
 # 链接 test 可执行程序到 muduo 库
 target_link_libraries(test muduo)
