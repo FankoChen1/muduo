@@ -26,7 +26,7 @@ public:
 
     // 返回缓冲区中可读数据的起始地址
     const char *peek() const { return begin() + readerIndex_; }
-    // 取出len长度的数据后对缓冲区进行复位
+    // 对缓冲区进行复位
     void retrieve(size_t len)
     {
         if (len < readableBytes())

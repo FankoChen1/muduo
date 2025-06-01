@@ -16,8 +16,8 @@
 #include "noncopyable.h"
 #include "EventLoopThreadPool.h"
 #include "Callbacks.h"
-// #include "TcpConnection.h"
-// #include "Buffer.h"
+#include "TcpConnection.h"
+#include "Buffer.h"
 
 // 使用时设置好callback，再调用start()即可
 class TcpServer : noncopyable

@@ -80,7 +80,7 @@ void TcpServer::newConnection(int sockfd, const InetAddress &peerAddr)
     socklen_t addrlen = sizeof(local);
     if(::getsockname(sockfd, (sockaddr *)&local, &addrlen) < 0)
     {
-        LOG_ERROR("%s:%s:%n sockets::getLocalAddr err:%n.\n", __FILE__, __FUNCTION__, __LINE__, errno);
+        LOG_ERROR("%s:%s:%d sockets::getLocalAddr err:%d.\n", __FILE__, __FUNCTION__, __LINE__, errno);
     }
 
     InetAddress localAddr(local);
