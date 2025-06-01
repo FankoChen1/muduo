@@ -1,1 +1,0 @@
-/usr/bin/c++  -g -rdynamic CMakeFiles/test.dir/test/TcpServer_test.cc.o -o test  libmuduo.a 

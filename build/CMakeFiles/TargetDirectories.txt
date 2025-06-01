@@ -1,4 +1,0 @@
-/home/cf/test_Projects/muduo/build/CMakeFiles/muduo.dir
-/home/cf/test_Projects/muduo/build/CMakeFiles/test.dir
-/home/cf/test_Projects/muduo/build/CMakeFiles/edit_cache.dir
-/home/cf/test_Projects/muduo/build/CMakeFiles/rebuild_cache.dir
