@@ -74,3 +74,13 @@ void Socket::setKeepAlive(bool on)
     int optval = on ? 1 : 0;
     ::setsockopt(sockfd_, SOL_SOCKET, SO_KEEPALIVE, &optval, sizeof(optval));
 }
+
+void Socket::setKeepAlive(int idle, int interval, int count)
+{
+    int optval = 1;  // 默认开启心跳检测
+    ::setsockopt(sockfd_, SOL_SOCKET, SO_KEEPALIVE, &optval, sizeof(optval));
+    
+    ::setsockopt(sockfd_, IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
+    ::setsockopt(sockfd_, IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
+    ::setsockopt(sockfd_, IPPROTO_TCP, TCP_KEEPCNT, &count, sizeof(count));
+}
