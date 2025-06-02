@@ -17,8 +17,19 @@ message(STATUS "Found sources: ${SOURCES}")  # 调试用，可选
 # 创建静态库
 add_library(muduo ${SOURCES})
 
-# 添加 test 可执行文件
-add_executable(test ${PROJECT_SOURCE_DIR}/test/TcpServer_test.cc)
+# # 添加 test 可执行文件
+# add_executable(test ${PROJECT_SOURCE_DIR}/test/EchoServer_test.cc)
+# # 链接 test 可执行程序到 muduo 库
+# target_link_libraries(test muduo)
 
-# 链接 test 可执行程序到 muduo 库
-target_link_libraries(test muduo)
+# 添加 ChatServer_test 可执行文件
+add_executable(ChatServer_test ${PROJECT_SOURCE_DIR}/test/ChatServer_test.cc)
+target_link_libraries(ChatServer_test muduo pthread)
+
+# 添加 ChatClient_test 可执行文件
+add_executable(ChatClient_test ${PROJECT_SOURCE_DIR}/test/ChatClient_test.cc)
+target_link_libraries(ChatClient_test muduo pthread)
+
+# 添加 HttpServer_test 可执行文件
+add_executable(HttpServer_test ${PROJECT_SOURCE_DIR}/test/HttpServer_test.cc)
+target_link_libraries(HttpServer_test muduo pthread)
