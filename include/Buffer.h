@@ -26,6 +26,14 @@ public:
 
     // 返回缓冲区中可读数据的起始地址
     const char *peek() const { return begin() + readerIndex_; }
+
+    // 在缓冲区可读数据中查找第一个出现的 "\r\n"
+    const char* findCRLF() const
+    {
+        const char* crlf = std::search(peek(), beginWrite(), "\r\n", "\r\n" + 2);
+        return crlf == beginWrite() ? nullptr : crlf;
+    }
+    
     // 对缓冲区进行复位
     void retrieve(size_t len)
     {
@@ -38,6 +46,15 @@ public:
             retrieveAll();
         }
     }
+
+    void retrieveUntil(const char* end)
+    {
+        if(peek() <= end && end <= beginWrite())
+        {
+            retrieve(end - peek());
+        }
+    }
+
     void retrieveAll()
     {
         readerIndex_ = kCheapPrepend;
@@ -61,6 +78,11 @@ public:
         {
             makeSpace(len); // 扩容
         }
+    }
+
+    void append(const std::string& str)
+    {
+        append(str.data(), str.size());
     }
 
     // 把[data, data+len]内存上的数据添加到writable缓冲区当中

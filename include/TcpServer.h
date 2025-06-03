@@ -49,6 +49,12 @@ public:
 
     void setThreadNum(int numThreads);
     void start();
+
+    const std::string name() { return name_; }
+
+    const std::string ipPort() { return ipPort_; }
+
+    EventLoop * getLoop() const { return loop_; }
 private:
     // 新连接到来时的回调
     void newConnection(int sockfd, const InetAddress &peerAddr);

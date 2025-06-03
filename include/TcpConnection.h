@@ -38,7 +38,7 @@ public:
     bool connected() const { return state_ == kConnected; }
 
     // 发送数据
-    void send(const std::string &buf);
+    void send(const std::string &buf, size_t len);
     void sendFile(int fileDescriptor, off_t offset, size_t count); 
     
     // 关闭半连接(关闭服务端的写连接)
@@ -54,6 +54,12 @@ public:
     { closeCallback_ = cb; }
     void setHighWaterMarkCallback(const HighWaterMarkCallback &cb, size_t highWaterMark)
     { highWaterMarkCallback_ = cb; highWaterMark_ = highWaterMark; }
+
+    void setContext(std::shared_ptr<void> context)
+    { context_ = context; }
+
+    std::shared_ptr<void> getMutableContext()
+    { return context_; }
 
     // 连接建立
     void connectEstablished();
@@ -104,4 +110,5 @@ private:
     // 数据缓冲区
     Buffer inputBuffer_;    // 接收数据的缓冲区
     Buffer outputBuffer_;   // 发送数据的缓冲区 用户send向outputBuffer_发
+    std::shared_ptr<void> context_;
 };

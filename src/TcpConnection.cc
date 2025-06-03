@@ -53,13 +53,13 @@ TcpConnection::~TcpConnection()
     LOG_INFO("TcpConnection::dtor[%s] at fd=%d state=%d\n", name_.c_str(), channel_->fd(), (int)state_);
 }
 
-void TcpConnection::send(const std::string &buf)
+void TcpConnection::send(const std::string &buf, size_t len)
 {
     if(state_ == kConnected)
     {
         if(loop_->isInLoopThread())
         {
-            sendInLoop(buf.c_str(), buf.size());
+            sendInLoop(buf.c_str(), len);
         }
         else
         {
