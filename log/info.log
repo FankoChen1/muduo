@@ -1,430 +1,92 @@
-[INFO]2025/06/03 09:19:26.762107 : func=updateChannel => fd=4 events=3 index=-1
+[INFO]2025/06/09 16:26:09.666254 : HttpServer[dummy] starts listening on 127.0.0.1:8080
+[INFO]2025/06/09 16:26:09.666508 : EventLoop 0x7da6f19feb80 start looping.
 
-[INFO]2025/06/03 09:19:26.762191 : func=updateChannel => fd=9 events=3 index=-1
+[INFO]2025/06/09 16:26:09.666687 : EventLoop 0x7da6f11fdb80 start looping.
 
-[INFO]2025/06/03 09:19:26.762256 : HttpServer[dummy] starts listening on 127.0.0.1:8000.
+[INFO]2025/06/09 16:26:09.667252 : EventLoop 0x7da6f09fcb80 start looping.
 
-[INFO]2025/06/03 09:19:26.762273 : func=updateChannel => fd=10 events=3 index=-1
+[INFO]2025/06/09 16:26:09.667576 : EventLoop 0x7da6e3ffeb80 start looping.
 
-[INFO]2025/06/03 09:19:26.762286 : EventLoop 0x7fff61b83410 start looping.
+[INFO]2025/06/09 16:26:09.676086 : EventLoop 0x7ffce86b18f0 start looping.
 
-[INFO]2025/06/03 09:19:26.762294 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.049923 : 1 events happend
 
-[INFO]2025/06/03 09:19:36.770948 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.049981 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:19:46.785418 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.050016 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#1] from 127.0.0.1:40364
 
-[INFO]2025/06/03 09:19:56.797069 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.050034 : TcpConnection::ctor[dummy-127.0.0.1:8080#1] at fd=36
 
-[INFO]2025/06/03 09:20:06.800449 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.050285 : 1 events happend
 
-[INFO]2025/06/03 09:20:16.814930 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.050322 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:20:26.829666 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052638 : 1 events happend
 
-[INFO]2025/06/03 09:20:36.834264 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052688 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:20:46.844179 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052716 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#2] from 127.0.0.1:40378
 
-[INFO]2025/06/03 09:20:56.865502 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052766 : TcpConnection::ctor[dummy-127.0.0.1:8080#2] at fd=37
 
-[INFO]2025/06/03 09:21:06.882819 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052821 : 1 events happend
 
-[INFO]2025/06/03 09:21:16.896428 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052880 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:21:26.920977 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052903 : 1 events happend
 
-[INFO]2025/06/03 09:21:36.935773 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.052910 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:21:46.955239 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.325807 : 1 events happend
 
-[INFO]2025/06/03 09:21:56.960071 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.325867 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:22:06.973852 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.325895 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#3] from 127.0.0.1:40380
 
-[INFO]2025/06/03 09:22:16.996956 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.325919 : TcpConnection::ctor[dummy-127.0.0.1:8080#3] at fd=38
 
-[INFO]2025/06/03 09:22:27.012558 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.326013 : 1 events happend
 
-[INFO]2025/06/03 09:22:37.027358 : func=poll => fd total count:3
+[INFO]2025/06/09 16:26:16.326045 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:22:47.033019 : func=poll => fd total count:3
+[INFO]2025/06/09 16:45:58.882548 : HttpServer[dummy] starts listening on 127.0.0.1:8080
+[INFO]2025/06/09 16:45:58.882917 : EventLoop 0x75266edfeb80 start looping.
 
-[INFO]2025/06/03 09:22:57.036831 : func=poll => fd total count:3
+[INFO]2025/06/09 16:45:58.883077 : EventLoop 0x75266e5fdb80 start looping.
 
-[INFO]2025/06/03 09:23:07.047458 : func=poll => fd total count:3
+[INFO]2025/06/09 16:45:58.883338 : EventLoop 0x75266ddfcb80 start looping.
 
-[INFO]2025/06/03 09:24:25.277544 : func=updateChannel => fd=4 events=3 index=-1
+[INFO]2025/06/09 16:45:58.883532 : EventLoop 0x75266d5fbb80 start looping.
 
-[INFO]2025/06/03 09:24:25.277675 : func=updateChannel => fd=9 events=3 index=-1
+[INFO]2025/06/09 16:45:58.883532 : EventLoop 0x75266d5fbb80 start looping.
 
-[INFO]2025/06/03 09:24:25.277762 : HttpServer[dummy] starts listening on 127.0.0.1:8000.
+[INFO]2025/06/09 16:45:58.883545 : EventLoop 0x7ffd310a5480 start looping.
 
-[INFO]2025/06/03 09:24:25.277783 : func=updateChannel => fd=10 events=3 index=-1
+[INFO]2025/06/09 16:46:03.122804 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:24:25.277796 : EventLoop 0x7ffff7cb45c0 start looping.
+[INFO]2025/06/09 16:46:03.122882 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#1] from 127.0.0.1:58646
 
-[INFO]2025/06/03 09:24:25.277805 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.123271 : TcpConnection::ctor[dummy-127.0.0.1:8080#1] at fd=36
 
-[INFO]2025/06/03 09:24:35.281653 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.123591 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:24:45.304069 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.123644 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:24:55.310159 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.126599 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:25:05.324506 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.126658 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#2] from 127.0.0.1:58660
 
-[INFO]2025/06/03 09:25:15.335720 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.126690 : TcpConnection::ctor[dummy-127.0.0.1:8080#2] at fd=37
 
-[INFO]2025/06/03 09:25:25.342370 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.126801 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:25:35.357574 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.380449 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:25:45.366089 : func=poll => fd total count:3
+[INFO]2025/06/09 16:46:03.380513 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#3] from 127.0.0.1:58670
 
-[INFO]2025/06/03 09:26:22.245350 : func=updateChannel => fd=4 events=3 index=-1
+[INFO]2025/06/09 16:46:03.380540 : TcpConnection::ctor[dummy-127.0.0.1:8080#3] at fd=38
 
-[INFO]2025/06/03 09:26:22.245473 : func=updateChannel => fd=9 events=3 index=-1
+[INFO]2025/06/09 16:46:03.380633 : channel handleEvent revents:1
 
-[INFO]2025/06/03 09:26:22.245533 : HttpServer[dummy] starts listening on 127.0.0.1:8000.
-
-[INFO]2025/06/03 09:26:22.245548 : func=updateChannel => fd=10 events=3 index=-1
-
-[INFO]2025/06/03 09:26:22.245559 : EventLoop 0x7ffde275d3d0 start looping.
-
-[INFO]2025/06/03 09:26:22.245566 : func=poll => fd total count:3
-
-[INFO]2025/06/03 09:26:32.270499 : func=poll => fd total count:3
-
-[INFO]2025/06/03 09:54:50.398045 : func=updateChannel => fd=4 events=3 index=-1
-
-[INFO]2025/06/03 09:54:50.398142 : func=updateChannel => fd=9 events=3 index=-1
-
-[INFO]2025/06/03 09:54:50.398198 : HttpServer[dummy] starts listening on 127.0.0.1:8000.
-
-[INFO]2025/06/03 09:54:50.398214 : func=updateChannel => fd=10 events=3 index=-1
-
-[INFO]2025/06/03 09:54:50.398225 : EventLoop 0x7ffc3e1d16f0 start looping.
-
-[INFO]2025/06/03 09:54:50.398233 : func=poll => fd total count:3
-
-[INFO]2025/06/03 09:54:53.899385 : 1 events happend
-
-[INFO]2025/06/03 09:54:53.899444 : channel handleEvent revents:1
-
-[INFO]2025/06/03 09:54:53.899474 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8000#1] from 127.0.0.1:36096
-
-[INFO]2025/06/03 09:54:53.899502 : TcpConnection::ctor[dummy-127.0.0.1:8000#1] at fd=11
-
-[INFO]2025/06/03 09:54:53.899527 : func=updateChannel => fd=11 events=3 index=-1
-
-[INFO]2025/06/03 09:54:53.899544 : func=poll => fd total count:4
-
-[INFO]2025/06/03 09:54:53.899553 : 1 events happend
-
-[INFO]2025/06/03 09:54:53.899560 : channel handleEvent revents:1
-
-[INFO]2025/06/03 09:54:53.899761 : func=poll => fd total count:4
-
-[INFO]2025/06/03 09:54:53.902598 : 1 events happend
-
-[INFO]2025/06/03 09:54:53.902645 : channel handleEvent revents:1
-
-[INFO]2025/06/03 09:54:53.902670 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8000#2] from 127.0.0.1:36100
-
-[INFO]2025/06/03 09:54:53.902694 : TcpConnection::ctor[dummy-127.0.0.1:8000#2] at fd=12
-
-[INFO]2025/06/03 09:54:53.902711 : func=updateChannel => fd=12 events=3 index=-1
-
-[INFO]2025/06/03 09:54:53.902726 : func=poll => fd total count:5
-
-[INFO]2025/06/03 09:54:54.008219 : 1 events happend
-
-[INFO]2025/06/03 09:54:54.008303 : channel handleEvent revents:1
-
-[INFO]2025/06/03 09:54:54.008560 : func=poll => fd total count:5
-
-[INFO]2025/06/03 09:54:54.204843 : 1 events happend
-
-[INFO]2025/06/03 09:54:54.204910 : channel handleEvent revents:1
-
-[INFO]2025/06/03 09:54:54.204943 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8000#3] from 127.0.0.1:36106
-
-[INFO]2025/06/03 09:54:54.204978 : TcpConnection::ctor[dummy-127.0.0.1:8000#3] at fd=13
-
-[INFO]2025/06/03 09:54:54.205003 : func=updateChannel => fd=13 events=3 index=-1
-
-[INFO]2025/06/03 09:54:54.205024 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:01:53.703361 : func=updateChannel => fd=4 events=3 index=-1
-
-[INFO]2025/06/03 10:01:53.703459 : func=updateChannel => fd=9 events=3 index=-1
-
-[INFO]2025/06/03 10:01:53.703531 : HttpServer[dummy] starts listening on 127.0.0.1:8000.
-
-[INFO]2025/06/03 10:01:53.703550 : func=updateChannel => fd=10 events=3 index=-1
-
-[INFO]2025/06/03 10:01:53.703563 : EventLoop 0x7ffe43986710 start looping.
-
-[INFO]2025/06/03 10:01:53.703571 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:02:03.706791 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:02:13.722397 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:02:23.747085 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:02:33.766471 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:02:43.771282 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:03:40.453326 : func=updateChannel => fd=4 events=3 index=-1
-
-[INFO]2025/06/03 10:03:40.453412 : func=updateChannel => fd=9 events=3 index=-1
-
-[INFO]2025/06/03 10:03:51.860622 : func=updateChannel => fd=4 events=3 index=-1
-
-[INFO]2025/06/03 10:03:51.860735 : func=updateChannel => fd=9 events=3 index=-1
-
-[INFO]2025/06/03 10:05:42.167203 : func=updateChannel => fd=4 events=3 index=-1
-
-[INFO]2025/06/03 10:05:42.167285 : func=updateChannel => fd=9 events=3 index=-1
-
-[INFO]2025/06/03 10:05:42.167378 : HttpServer[dummy] starts listening on 127.0.0.1:8080.
-
-[INFO]2025/06/03 10:05:42.167391 : func=updateChannel => fd=10 events=3 index=-1
-
-[INFO]2025/06/03 10:05:42.167420 : EventLoop 0x7ffd0fc232e0 start looping.
-
-[INFO]2025/06/03 10:05:42.167446 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:05:52.183489 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:06:02.198446 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:06:12.208218 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:06:22.221683 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:06:25.517725 : 1 events happend
-
-[INFO]2025/06/03 10:06:25.517808 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:25.517855 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#1] from 127.0.0.1:42956
-
-[INFO]2025/06/03 10:06:25.517922 : TcpConnection::ctor[dummy-127.0.0.1:8080#1] at fd=11
-
-[INFO]2025/06/03 10:06:25.517955 : func=updateChannel => fd=11 events=3 index=-1
-
-[INFO]2025/06/03 10:06:25.517981 : func=poll => fd total count:4
-
-[INFO]2025/06/03 10:06:25.523232 : 1 events happend
-
-[INFO]2025/06/03 10:06:25.523416 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:25.524211 : func=poll => fd total count:4
-
-[INFO]2025/06/03 10:06:25.620350 : 1 events happend
-
-[INFO]2025/06/03 10:06:25.620424 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:25.621372 : func=poll => fd total count:4
-
-[INFO]2025/06/03 10:06:35.621758 : func=poll => fd total count:4
-
-[INFO]2025/06/03 10:06:37.045441 : 1 events happend
-
-[INFO]2025/06/03 10:06:37.045501 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:37.045536 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#2] from 127.0.0.1:57452
-
-[INFO]2025/06/03 10:06:37.045561 : TcpConnection::ctor[dummy-127.0.0.1:8080#2] at fd=12
-
-[INFO]2025/06/03 10:06:37.045584 : func=updateChannel => fd=12 events=3 index=-1
-
-[INFO]2025/06/03 10:06:37.045608 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:37.048719 : 1 events happend
-
-[INFO]2025/06/03 10:06:37.048762 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:37.048969 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:37.083696 : 1 events happend
-
-[INFO]2025/06/03 10:06:37.083739 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:37.084490 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:39.595408 : 2 events happend
-
-[INFO]2025/06/03 10:06:39.595452 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:39.595471 : TcpConnection::handleClose fd=12 state=2
-
-[INFO]2025/06/03 10:06:39.595478 : func=updateChannel => fd=12 events=0 index=1
-
-[INFO]2025/06/03 10:06:39.595492 : TcpServer::removeConnectionInLoop [dummy] - connection dummy-127.0.0.1:8080#2
-
-[INFO]2025/06/03 10:06:39.595504 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:39.595513 : TcpConnection::handleClose fd=11 state=2
-
-[INFO]2025/06/03 10:06:39.595519 : func=updateChannel => fd=11 events=0 index=1
-
-[INFO]2025/06/03 10:06:39.595527 : TcpServer::removeConnectionInLoop [dummy] - connection dummy-127.0.0.1:8080#1
-
-[INFO]2025/06/03 10:06:39.595536 : func=removeChannel => fd=12
-
-[INFO]2025/06/03 10:06:39.595542 : func=removeChannel => fd=11
-
-[INFO]2025/06/03 10:06:39.595548 : TcpConnection::dtor[dummy-127.0.0.1:8080#2] at fd=12 state=0
-
-[INFO]2025/06/03 10:06:39.595619 : TcpConnection::dtor[dummy-127.0.0.1:8080#1] at fd=11 state=0
-
-[INFO]2025/06/03 10:06:39.595652 : func=poll => fd total count:3
-
-[INFO]2025/06/03 10:06:41.133932 : 1 events happend
-
-[INFO]2025/06/03 10:06:41.133988 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:41.134016 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#3] from 127.0.0.1:57456
-
-[INFO]2025/06/03 10:06:41.134043 : TcpConnection::ctor[dummy-127.0.0.1:8080#3] at fd=11
-
-[INFO]2025/06/03 10:06:41.134161 : func=updateChannel => fd=11 events=3 index=-1
-
-[INFO]2025/06/03 10:06:41.134217 : func=poll => fd total count:4
-
-[INFO]2025/06/03 10:06:41.134230 : 1 events happend
-
-[INFO]2025/06/03 10:06:41.134236 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:41.134367 : func=poll => fd total count:4
-
-[INFO]2025/06/03 10:06:41.137711 : 1 events happend
-
-[INFO]2025/06/03 10:06:41.137764 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:41.137788 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#4] from 127.0.0.1:57458
-
-[INFO]2025/06/03 10:06:41.137804 : TcpConnection::ctor[dummy-127.0.0.1:8080#4] at fd=12
-
-[INFO]2025/06/03 10:06:41.137820 : func=updateChannel => fd=12 events=3 index=-1
-
-[INFO]2025/06/03 10:06:41.137835 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:41.252630 : 1 events happend
-
-[INFO]2025/06/03 10:06:41.252705 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:41.253038 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:47.842100 : 1 events happend
-
-[INFO]2025/06/03 10:06:47.842189 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:47.842391 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:47.905387 : 1 events happend
-
-[INFO]2025/06/03 10:06:47.905472 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:06:47.905848 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:06:57.925617 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:07:07.947727 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:07:17.958916 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:07:27.975163 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:07:37.982124 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:07:47.987716 : func=poll => fd total count:5
-
-[INFO]2025/06/03 10:07:55.506855 : 1 events happend
-
-[INFO]2025/06/03 10:07:55.506943 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:07:55.506973 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#5] from 127.0.0.1:50278
-
-[INFO]2025/06/03 10:07:55.506991 : TcpConnection::ctor[dummy-127.0.0.1:8080#5] at fd=13
-
-[INFO]2025/06/03 10:07:55.507008 : func=updateChannel => fd=13 events=3 index=-1
-
-[INFO]2025/06/03 10:07:55.507024 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:07:55.507034 : 1 events happend
-
-[INFO]2025/06/03 10:07:55.507363 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:07:55.507511 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:08:03.411039 : 1 events happend
-
-[INFO]2025/06/03 10:08:03.411319 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:08:03.411423 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#6] from 127.0.0.1:32930
-
-[INFO]2025/06/03 10:08:03.411517 : TcpConnection::ctor[dummy-127.0.0.1:8080#6] at fd=14
-
-[INFO]2025/06/03 10:08:03.411584 : func=updateChannel => fd=14 events=3 index=-1
-
-[INFO]2025/06/03 10:08:03.411650 : func=poll => fd total count:7
-
-[INFO]2025/06/03 10:08:03.483137 : 1 events happend
-
-[INFO]2025/06/03 10:08:03.483225 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:08:03.483800 : func=poll => fd total count:7
-
-[INFO]2025/06/03 10:08:03.541388 : 1 events happend
-
-[INFO]2025/06/03 10:08:03.541445 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:08:03.541868 : func=poll => fd total count:7
-
-[INFO]2025/06/03 10:08:03.541906 : 1 events happend
-
-[INFO]2025/06/03 10:08:03.541918 : channel handleEvent revents:25
-
-[INFO]2025/06/03 10:08:03.543202 : TcpConnection::handleClose fd=14 state=2
-
-[INFO]2025/06/03 10:08:03.543221 : func=updateChannel => fd=14 events=0 index=1
-
-[INFO]2025/06/03 10:08:03.543236 : TcpServer::removeConnectionInLoop [dummy] - connection dummy-127.0.0.1:8080#6
-
-[INFO]2025/06/03 10:08:03.543249 : func=removeChannel => fd=14
-
-[INFO]2025/06/03 10:08:03.543257 : TcpConnection::dtor[dummy-127.0.0.1:8080#6] at fd=14 state=0
-
-[INFO]2025/06/03 10:08:03.543275 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:08:13.555233 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:08:23.568733 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:08:33.576383 : func=poll => fd total count:6
-
-[INFO]2025/06/03 10:08:41.034361 : 1 events happend
-
-[INFO]2025/06/03 10:08:41.034446 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:08:41.034490 : TcpServer::newConnection [dummy] - new connection [dummy-127.0.0.1:8080#7] from 127.0.0.1:40950
-
-[INFO]2025/06/03 10:08:41.034515 : TcpConnection::ctor[dummy-127.0.0.1:8080#7] at fd=14
-
-[INFO]2025/06/03 10:08:41.034540 : func=updateChannel => fd=14 events=3 index=-1
-
-[INFO]2025/06/03 10:08:41.034566 : func=poll => fd total count:7
-
-[INFO]2025/06/03 10:08:41.034581 : 1 events happend
-
-[INFO]2025/06/03 10:08:41.034592 : channel handleEvent revents:1
-
-[INFO]2025/06/03 10:08:41.034735 : func=poll => fd total count:7
-
-[INFO]2025/06/03 10:08:51.056934 : func=poll => fd total count:7
+[INFO]2025/06/09 16:46:26.358765 : channel handleEvent revents:1
 

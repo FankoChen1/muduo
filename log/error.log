@@ -1,2 +1,2 @@
-[ERROR]2025/06/03 10:08:03.541927 : TcpConnection::handleError name:dummy-127.0.0.1:8080#6 - SO_ERROR:32
+[ERROR]2025/06/09 16:46:26.359297 : Unexpected transaction result format
 

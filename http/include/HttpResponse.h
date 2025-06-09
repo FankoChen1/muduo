@@ -3,6 +3,10 @@
 #include <map>
 #include <string>
 
+/*
+* 用于构造和存储 HTTP 响应，包括状态码、响应头、响应体等，最终将响应内容写入 Buffer 发送给客户端。
+*/
+
 class Buffer;
 class HttpResponse
 {
@@ -14,6 +18,8 @@ public:
         k301MovedPermanently = 301,
         k400BadRequest = 400,
         k404NotFound = 404,
+        k500InternalServerError = 500,
+        k503ServiceUnavailable = 530
     };
 
     explicit HttpResponse(bool close)
@@ -47,7 +53,6 @@ public:
         addHeader("Content-Type", contentType);
     }
 
-    // FIXME: replace std::string with std::stringPiece
     void addHeader(const std::string &key, const std::string &value)
     {
         headers_[key] = value;

@@ -57,7 +57,7 @@ public:
 
     void setContext(std::shared_ptr<void> context)
     { context_ = context; }
-
+    // 返回连接附带内容
     std::shared_ptr<void> getMutableContext()
     { return context_; }
 
@@ -110,5 +110,6 @@ private:
     // 数据缓冲区
     Buffer inputBuffer_;    // 接收数据的缓冲区
     Buffer outputBuffer_;   // 发送数据的缓冲区 用户send向outputBuffer_发
+    // 这条连接所附带的内容
     std::shared_ptr<void> context_;
 };

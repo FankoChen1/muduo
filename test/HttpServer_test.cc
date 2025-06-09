@@ -34,7 +34,7 @@ private:
                 "Connection: close\r\n"
                 "\r\n"
                 "Hello World\n";
-            conn->send(response);
+            conn->send(response, sizeof(response));
             conn->shutdown(); // HTTP短连接，发送完就关闭
         }
     }

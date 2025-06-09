@@ -46,7 +46,7 @@ public:
             retrieveAll();
         }
     }
-
+    // 回收当前读位置到end指针位置的数据，即标记为已读
     void retrieveUntil(const char* end)
     {
         if(peek() <= end && end <= beginWrite())
@@ -54,7 +54,7 @@ public:
             retrieve(end - peek());
         }
     }
-
+    // 完全复位
     void retrieveAll()
     {
         readerIndex_ = kCheapPrepend;

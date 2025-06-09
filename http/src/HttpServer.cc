@@ -10,6 +10,7 @@
 namespace detail
 {
 
+// 默认的http请求处理回调
 void defaultHttpCallback(const HttpRequest&, HttpResponse* resp)
 {
   resp->setStatusCode(HttpResponse::k404NotFound);
@@ -24,7 +25,8 @@ HttpServer::HttpServer(EventLoop* loop,
                        const string& name,
                        TcpServer::Option option)
   : server_(loop, listenAddr, name, option),
-    httpCallback_(detail::defaultHttpCallback)
+    httpCallback_(detail::defaultHttpCallback),
+    threadPool_(nullptr)
 {
   server_.setConnectionCallback(
       std::bind(&HttpServer::onConnection, this, std::placeholders::_1));
@@ -34,8 +36,9 @@ HttpServer::HttpServer(EventLoop* loop,
 
 void HttpServer::start()
 {
-  LOG_INFO("HttpServer[%s] starts listening on %s.\n", server_.name().c_str(), server_.ipPort().c_str());
-  server_.start();
+    LOG_INFO("HttpServer[%s] starts listening on %s", server_.name().c_str(), server_.ipPort().c_str());
+    // 启动 HTTP 主线程池
+    server_.start();
 }
 
 void HttpServer::onConnection(const TcpConnectionPtr& conn)

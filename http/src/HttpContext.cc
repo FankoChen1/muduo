@@ -44,7 +44,6 @@ bool HttpContext::processRequestLine(const char *begin, const char *end)
     return succeed;
 }
 
-// return false if any error
 bool HttpContext::parseRequest(Buffer *buf, Timestamp receiveTime)
 {
     bool ok = true;
@@ -85,10 +84,28 @@ bool HttpContext::parseRequest(Buffer *buf, Timestamp receiveTime)
                 }
                 else
                 {
-                    // empty line, end of header
-                    // FIXME:
-                    state_ = kGotAll;
-                    hasMore = false;
+                    // 判断是否需要解析body（如有Content-Length且为POST/PUT等）
+                    if (request_.method() == HttpRequest::kPost || request_.method() == HttpRequest::kPut)
+                    {
+                        std::string lenStr = request_.getHeader("Content-Length");
+                        if (!lenStr.empty())
+                        {
+                            // 如果有Content-Length，则进入body解析状态
+                            state_ = kExpectBody;
+                        }
+                        else
+                        {
+                            // 没有Content-Length，直接认为解析完成
+                            state_ = kGotAll;
+                            hasMore = false;
+                        }
+                    }
+                    else
+                    {
+                        // GET/HEAD等无body，直接完成
+                        state_ = kGotAll;
+                        hasMore = false;
+                    }
                 }
                 buf->retrieveUntil(crlf + 2);
             }
@@ -99,7 +116,30 @@ bool HttpContext::parseRequest(Buffer *buf, Timestamp receiveTime)
         }
         else if (state_ == kExpectBody)
         {
-            // FIXME:
+            // 只支持 Content-Length，且一次性读完
+            std::string lenStr = request_.getHeader("Content-Length");
+            if (!lenStr.empty())
+            {
+                size_t contentLength = static_cast<size_t>(atoi(lenStr.c_str()));
+                if (buf->readableBytes() >= contentLength)
+                {
+                    request_.setBody(std::string(buf->peek(), contentLength));
+                    buf->retrieve(contentLength);
+                    state_ = kGotAll;
+                    hasMore = false;
+                }
+                else
+                {
+                    // 数据还不够，等待更多数据
+                    hasMore = false;
+                }
+            }
+            else
+            {
+                // 没有 Content-Length，直接完成
+                state_ = kGotAll;
+                hasMore = false;
+            }
         }
     }
     return ok;

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易留言板</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .message-board {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .message-form {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #388e3c;
+            border-bottom: 2px solid #c8e6c9;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .char-count {
+            font-size: 0.9em;
+            color: #888;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #43a047;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #388e3c;
+        }
+
+        .messages {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .message {
+            background-color: #fefefe;
+            border-left: 5px solid #66bb6a;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .message-time {
+            font-size: 0.85em;
+            color: #888;
+        }
+
+        .message-content {
+            color: #333;
+            font-size: 1em;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="message-board">
+        <h1>留言板</h1>
+
+        <div class="message-form">
+            <h2>发表留言</h2>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="name">姓名：</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">留言内容：</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <div class="char-count" id="charCount">已输入 0 / 1000 字</div>
+                </div>
+                <button type="submit" id="submitBtn">提交留言</button>
+            </form>
+        </div>
+
+        <div class="messages">
+            <h2>留言列表</h2>
+            <div id="messageList">
+                <div class="message">
+                    <div class="message-header">
+                        <span class="message-author">张三</span>
+                        <span class="message-time">2023-05-15 14:30</span>
+                    </div>
+                    <div class="message-content">
+                        欢迎使用本留言板！
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const messageInput = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+        const submitBtn = document.getElementById('submitBtn');
+        const maxChars = 1000;
+
+        messageInput.addEventListener('input', function () {
+            const len = messageInput.value.replace(/[^\u4e00-\u9fa5]/g, '').length;
+            charCount.textContent = `已输入 ${len} / ${maxChars} 字`;
+            submitBtn.disabled = len > maxChars;
+            charCount.style.color = len > maxChars ? 'red' : '#888';
+        });
+
+        document.getElementById('messageForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const message = messageInput.value.trim();
+            const hanziLen = message.replace(/[^\u4e00-\u9fa5]/g, '').length;
+
+            if (hanziLen > maxChars) {
+                alert(`留言内容超出最大限制（${maxChars}个汉字）`);
+                return;
+            }
+
+            const time = new Date().toLocaleString("zh-CN", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false
+            }).replace(/\//g, "-");
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, message, time })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert('留言提交成功！');
+                    document.getElementById('messageForm').reset();
+                    charCount.textContent = `已输入 0 / ${maxChars} 字`;
+                    window.location.reload();
+                } else {
+                    alert('留言提交失败: ' + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('网络错误，请稍后重试。');
+            }
+        });
+
+        // 使用服务器端渲染数据（如需动态加载）
+        if (window.initMessages) {
+            renderMessages(window.initMessages);
+        }
+
+        function renderMessages(messages) {
+            const container = document.getElementById('messageList');
+            container.innerHTML = '';
+            messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'message';
+                div.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-author">${msg.name}</span>
+                        <span class="message-time">${msg.time}</span>
+                    </div>
+                    <div class="message-content">${msg.message}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+    </script>
+</body>
+
+</html>

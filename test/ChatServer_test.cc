@@ -32,7 +32,7 @@ private:
                     while (std::getline(std::cin, line)) {
                         TcpConnectionPtr conn = conn_; // 拷贝智能指针，防止析构
                         if (conn && conn->connected()) {
-                            conn->send(line + "\n");
+                            conn->send(line + "\n", sizeof(line)+2);
                         }
                     }
                 }).detach();
