@@ -65,112 +65,152 @@ time_t parseTimeString(const std::string& timeStr) {
     return std::mktime(&tm);
 }
 
-// 处理post请求
 void handlePostRequest(const HttpRequest &req, HttpResponse *resp) {
-    // 解析JSON请求体
-    auto json_body = json::parse(req.body());
+    try {
+        // 解析JSON请求体
+        auto json_body = json::parse(req.body());
 
-    // 验证必要字段
-    if (!json_body.contains("name") || !json_body.contains("message") || !json_body.contains("time")) {
-          LOG_ERROR("Missing name or message or time field\n");
-          // 返回失败响应
-          resp->setStatusCode(HttpResponse::k200Ok);
-          resp->setContentType("application/json");
-          resp->setBody(json{
-              {"status", "failed"}
-          }.dump());
-          return;
-    }
+        // 验证必要字段
+        if (!json_body.contains("name") || !json_body.contains("message") || !json_body.contains("time")) {
+            LOG_ERROR("Missing required fields: name, message or time\n");
+            resp->setStatusCode(HttpResponse::k400BadRequest);
+            resp->setContentType("application/json");
+            resp->setBody(json{
+                {"status", "failed"},
+                {"reason", "Missing required fields: name, message or time"}
+            }.dump());
+            return;
+        }
 
-    // 提取数据
-    std::string name = json_body["name"].get<std::string>();
-    std::string message = json_body["message"].get<std::string>();
-    std::string time_str = json_body["time"].get<std::string>();
-    time_t timestamp = parseTimeString(time_str);
+        // 提取数据
+        std::string name = json_body["name"].get<std::string>();
+        std::string message = json_body["message"].get<std::string>();
+        std::string time_str = json_body["time"].get<std::string>();
+        time_t timestamp = parseTimeString(time_str);
 
-#ifdef DEBUG
-    cout << name << ":" << message << ":" << time_str << endl;
-#endif
+        // 将timestamp，传入lua脚本用
+        std::string timestamp_str = std::to_string(timestamp);
 
-    // 获取Redis连接
-    RedisConnectionPool& redis_pool = RedisConnectionPool::getInstance();
-    auto conn = redis_pool.getConnection();
-    if (!conn) {
-        LOG_ERROR("Failed to get Redis connection\n");
-        // 返回失败响应
+        #ifdef DEBUG
+            std::cout << "Received message - "
+                      << "Name: " << name << ", "
+                      << "Message: " << message << ", "
+                      << "Time: " << time_str << std::endl;
+        #endif
+
+        // 获取Redis连接
+        RedisConnectionPool& redis_pool = RedisConnectionPool::getInstance();
+        auto conn = redis_pool.getConnection();
+        if (!conn) {
+            LOG_ERROR("Failed to get Redis connection\n");
+            resp->setStatusCode(HttpResponse::k500InternalServerError);
+            resp->setContentType("application/json");
+            resp->setBody(json{
+                {"status", "failed"},
+                {"reason", "Redis connection failed"}
+            }.dump());
+            return;
+        }
+
+        // 定义Lua脚本
+        // KEYS: none (we're using ARGV only)
+        // ARGV[1]: name
+        // ARGV[2]: message
+        // ARGV[3]: time string
+        // ARGV[4]: timestamp
+        const std::string lua_script = R"(
+            -- 生成唯一ID
+            local id = redis.call('INCR', 'message:id_counter')
+            
+            -- 构造消息ID
+            local message_id = 'message:' .. id
+            
+            -- 存储消息详情
+            redis.call('HSET', message_id,
+                      'name', ARGV[1],
+                      'message', ARGV[2],
+                      'time', ARGV[3])
+            
+            -- 添加到时间排序的有序集合
+            redis.call('ZADD', 'messages_by_time', ARGV[4], message_id)
+            
+            -- 返回消息ID
+            return message_id
+        )";
+
+        // 执行Lua脚本
+        redisReply* reply = (redisReply*)redisCommand(
+            conn.get(),
+            "EVAL %s 0 %b %b %b %b",
+            lua_script.c_str(),
+            name.data(), name.size(),
+            message.data(), message.size(),
+            time_str.data(), time_str.size(),
+            timestamp_str.data(), timestamp_str.size());
+
+        // 处理脚本执行结果
+        if (!reply) {
+            LOG_ERROR("Null reply from Redis\n");
+            resp->setStatusCode(HttpResponse::k500InternalServerError);
+            resp->setContentType("application/json");
+            resp->setBody(json{
+                {"status", "failed"},
+                {"reason", "Redis command failed"}
+            }.dump());
+            redis_pool.releaseConnection(conn);
+            return;
+        }
+            cout << "lua脚本执行结果1" << endl;
+        if (reply->type == REDIS_REPLY_ERROR) {
+            LOG_ERROR("Redis error: %s\n", reply->str);
+            resp->setStatusCode(HttpResponse::k500InternalServerError);
+            resp->setContentType("application/json");
+            resp->setBody(json{
+                {"status", "failed"},
+                {"reason", reply->str}
+            }.dump());
+            freeReplyObject(reply);
+            redis_pool.releaseConnection(conn);
+            return;
+        }
+            cout << "lua脚本执行结果2" << endl;
+        if (reply->type != REDIS_REPLY_STRING) {
+            LOG_ERROR("Unexpected reply type: %d\n", reply->type);
+            resp->setStatusCode(HttpResponse::k500InternalServerError);
+            resp->setContentType("application/json");
+            resp->setBody(json{
+                {"status", "failed"},
+                {"reason", "Unexpected response format"}
+            }.dump());
+            freeReplyObject(reply);
+            redis_pool.releaseConnection(conn);
+            return;
+        }
+
+        // 获取返回的消息ID
+        std::string message_id(reply->str, reply->len);
+        freeReplyObject(reply);
+
+        // 释放连接
+        redis_pool.releaseConnection(conn);
+
+        // 返回成功响应
         resp->setStatusCode(HttpResponse::k200Ok);
         resp->setContentType("application/json");
         resp->setBody(json{
-            {"status", "failed"}
+            {"status", "success"},
+            {"message_id", message_id}
         }.dump());
-        return;
-    }
 
-    // 生成留言ID，记录留言到了多少条
-    redisReply* id_reply = (redisReply*)redisCommand(conn.get(), "INCR message:id_counter");
-    if (!id_reply || id_reply->type == REDIS_REPLY_ERROR) {
-        freeReplyObject(id_reply);
-        LOG_ERROR("Failed to generate message ID\n");
-        // 返回失败响应
-        resp->setStatusCode(HttpResponse::k200Ok);
+    } catch (const std::exception& e) {
+        LOG_ERROR("Exception: %s\n", e.what());
+        resp->setStatusCode(HttpResponse::k500InternalServerError);
         resp->setContentType("application/json");
         resp->setBody(json{
-            {"status", "failed"}
+            {"status", "failed"},
+            {"reason", e.what()}
         }.dump());
-        return;
     }
-    std::string message_id = "message:" + std::to_string(id_reply->integer);
-    freeReplyObject(id_reply);
-
-    // 存储留言详情到Hash
-    redisReply* hset_reply = (redisReply*)redisCommand(conn.get(), 
-        "HSET %s name %b message %b time %b", 
-        message_id.c_str(),
-        name.data(), name.size(),
-        message.data(), message.size(),
-        time_str.data(), time_str.size());
-    
-    if (!hset_reply || hset_reply->type == REDIS_REPLY_ERROR) {
-        freeReplyObject(hset_reply);
-        LOG_ERROR("Failed to store message details\n");
-        // 返回失败响应
-        resp->setStatusCode(HttpResponse::k200Ok);
-        resp->setContentType("application/json");
-        resp->setBody(json{
-            {"status", "failed"}
-        }.dump());
-        return;
-    }
-    freeReplyObject(hset_reply);
-
-    // 将留言ID添加到Sorted Set按时间排序
-    redisReply* zadd_reply = (redisReply*)redisCommand(conn.get(), 
-        "ZADD messages_by_time %ld %s", timestamp, message_id.c_str());
-    
-    if (!zadd_reply || zadd_reply->type == REDIS_REPLY_ERROR) {
-        freeReplyObject(zadd_reply);
-        LOG_ERROR("Failed to add message to sorted set\n");
-        // 返回失败响应
-        resp->setStatusCode(HttpResponse::k200Ok);
-        resp->setContentType("application/json");
-        resp->setBody(json{
-            {"status", "failed"}
-        }.dump());
-        return;
-    }
-    freeReplyObject(zadd_reply);
-
-    // 释放连接回池中
-    redis_pool.releaseConnection(conn);
-
-    // 返回成功响应
-    resp->setStatusCode(HttpResponse::k200Ok);
-    resp->setContentType("application/json");
-    resp->setBody(json{
-        {"status", "success"},
-        {"message_id", message_id}
-    }.dump());
-    return;
 }
 
 // 处理根路径GET请求
